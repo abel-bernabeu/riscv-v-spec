@@ -4747,6 +4747,23 @@ destination SEW, the least-significant SEW bits are retained.
 NOTE: Microarchitectures can implement `vid.v` instruction using the
 same datapath as `viota.m` but with an implicit set mask source.
 
+=== Vector Swizzle Pattern Instruction
+
+The `vswiz4` instruction writes to the destination vector register
+group the indices pattern needed for performing a permutation in four
+elements subgroups with `vrgather.v.x`. Such a permutation is commonly
+known in computer graphics as a swizzle.
+
+The instruction partitions the register group in subgroups of four elements.
+Then, within each subgroup it generates the permutation indices according to
+the 8 bits immediate. The least significant two bits in the immediate select
+the index for the first component within the subgroup, the next two bits
+select the index for the second, etc.
+
+----
+vswiz4.vi vd, uimm[7:0]  # j = i and 3, vd[i] = i and not 3 + uimm[(2+1)*j-1:2*j]
+----
+
 == Vector Permutation Instructions
 
 A range of permutation instructions are provided to move elements
